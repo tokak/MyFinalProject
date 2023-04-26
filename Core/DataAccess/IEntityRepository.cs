@@ -1,13 +1,12 @@
-﻿using Entities.Concrete;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
-using Entities.Abstract;
-
-namespace DataAccess.Abstract
+using Core.Entities;
+    
+namespace Core.DataAccess
 {
     //Generic Constrain
     //Class : Referans tip olabilir.
