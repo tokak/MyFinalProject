@@ -22,9 +22,17 @@ namespace ConsoleUI
         {
             //İlişkili tablodan veri çekme
             ProductManager productManager = new ProductManager(new EfProductDal());
-            foreach (var item in productManager.GetProductDetails())
+            var result = productManager.GetProductDetails();
+            foreach (var item in result.Data)
             {
-                Console.WriteLine($"{item.ProductId} {item.ProductName} {item.CategoryName} {item.UnitsInStock}");
+                if (result.Success==true)
+                {
+                    Console.WriteLine($"{item.ProductId} {item.ProductName} {item.CategoryName} {item.UnitsInStock}");
+                }
+                else
+                {
+                    Console.WriteLine($"{result.Message}");
+                }
             }
         }
 
@@ -46,7 +54,7 @@ namespace ConsoleUI
         {
             //Ürünle, fiyatlarına göre listeleme
             ProductManager productManager = new ProductManager(new EfProductDal());
-            foreach (var item in productManager.GetByUnitPrice(4, 1000))
+            foreach (var item in productManager.GetByUnitPrice(4, 1000).Data)
             {
                 Console.WriteLine($"{item.ProductName} {item.UnitPrice} {item.CategoryId}");
             }
