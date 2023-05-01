@@ -41,13 +41,13 @@ namespace ConsoleUI
             //Categorileri listeleme
             CategoryManager categoryManager = new CategoryManager(new EfCategoryDal());
 
-            foreach (var item in categoryManager.GetAll())
+            foreach (var item in categoryManager.GetAll().Data)
             {
                 Console.WriteLine($"{item.CategoryName}");
             }
             Console.WriteLine("-------------------------");
             var getCategori = categoryManager.GetById(5);
-            Console.WriteLine(getCategori.CategoryName);
+            Console.WriteLine(getCategori.Data.CategoryName);
         }
 
         private static void GetAllProductTest()
