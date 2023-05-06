@@ -1,0 +1,26 @@
+﻿using Core.Utilities.Results;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace Core.Utilities.Bussiness
+{
+    public  class BussinessRules
+    {
+        public static IResult Run(params IResult[] logics)
+        {
+            //iş kurallarında başarısız olanı bussinese haberdar ediyoruz.
+            foreach (var logic in logics)
+            {
+                if (!logic.Success)
+                {
+                    return logic;
+                }
+            }
+            return null;
+
+        }
+    }
+}

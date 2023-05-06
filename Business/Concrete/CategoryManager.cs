@@ -1,6 +1,7 @@
 ﻿using Business.Abstract;
 using Core.DataAccess.EntitiyFramework;
 using Core.Utilities.Results;
+using DataAccess.Abstract;
 using DataAccess.Concrete.EntityFramework;
 using Entities.Concrete;
 using System;
@@ -13,22 +14,22 @@ namespace Business.Concrete
 {
     public class CategoryManager : ICategoryService
     {
-        EfEntityRepositoryBase<Category,NorthwindContext> _efCategory;
+        ICategoryDal _categoryDal;
 
-        public CategoryManager(EfEntityRepositoryBase<Category, NorthwindContext> efCategory)
+        public CategoryManager(ICategoryDal categoryDal)
         {
-            _efCategory = efCategory;
+            _categoryDal = categoryDal;
         }
-
+    
         public IDataResult<List<Category>> GetAll()
         {
             //Var ise iş kodlarımızı yazdıgımız yer
-            return new SuccessDataResult<List<Category>>(_efCategory.GetAll());
+            return new SuccessDataResult<List<Category>>(_categoryDal.GetAll());
         }
         //Select * from Categories where CategoryId = ?
         public IDataResult<Category> GetById(int categoryId)
         {
-            return new SuccessDataResult<Category>(_efCategory.Get(item=>item.CategoryId==categoryId));
+            return new SuccessDataResult<Category>(_categoryDal.Get(item=>item.CategoryId==categoryId));
         }
     }
 }

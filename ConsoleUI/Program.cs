@@ -21,7 +21,7 @@ namespace ConsoleUI
         private static void GetAllProductDelailDtoTest()
         {
             //İlişkili tablodan veri çekme
-            ProductManager productManager = new ProductManager(new EfProductDal());
+            ProductManager productManager = new ProductManager(new EfProductDal(),new CategoryManager(new EfCategoryDal()));
             var result = productManager.GetProductDetails();
             foreach (var item in result.Data)
             {
@@ -53,7 +53,7 @@ namespace ConsoleUI
         private static void GetAllProductTest()
         {
             //Ürünle, fiyatlarına göre listeleme
-            ProductManager productManager = new ProductManager(new EfProductDal());
+            ProductManager productManager = new ProductManager(new EfProductDal(), new CategoryManager(new EfCategoryDal()));
             foreach (var item in productManager.GetByUnitPrice(4, 1000).Data)
             {
                 Console.WriteLine($"{item.ProductName} {item.UnitPrice} {item.CategoryId}");
