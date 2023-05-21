@@ -1,4 +1,7 @@
-﻿using Core.Utilities.Security.Encryption;
+﻿using Core.DependencyResolvers;
+using Core.Extensions;
+using Core.Utilities.IoC;
+using Core.Utilities.Security.Encryption;
 using Core.Utilities.Security.JWT;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
@@ -23,7 +26,7 @@ public class Startup
         services.AddControllers();
         services.AddSwaggerGen();
         // Diğer servislerin eklenmesi
-        services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+        //services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
         var tokenOptions = Configuration.GetSection("TokenOptions").Get<TokenOptions>();
 
         services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
@@ -41,7 +44,12 @@ public class Startup
                 };
             });
 
+        //ServiceTool.Create(services);
 
+        services.AddDependencyResolvers(new ICoreModule[]
+        {
+            new CoreModule()
+        });
     }
 
     public void Configure(IApplicationBuilder app, IWebHostEnvironment env)

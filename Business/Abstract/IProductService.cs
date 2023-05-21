@@ -19,5 +19,10 @@ namespace Business.Abstract
         IResult Add(Product product);
         IResult Update(Product product);
         IDataResult<Product> GetById(int productId);
+
+
+        //Uygulamalarda tutarlıgı korumak için yapılan yöntem
+        //Aynı anda birden fazla işlem yapılması
+        IResult AddTransactionalTest(Product product);
     }
 }

@@ -3,6 +3,9 @@ using Business.BusinessAspects.Autofac;
 using Business.CCS;
 using Business.Constants;
 using Business.ValidationRules.FluentValidation;
+using Core.Aspect.Autofac.Caching;
+using Core.Aspect.Autofac.Performance;
+using Core.Aspect.Autofac.Transaction;
 using Core.Aspect.Autofac.Validation;
 using Core.CrossCuttingCorncerns.Validation;
 using Core.Utilities.Bussiness;
@@ -30,9 +33,10 @@ namespace Business.Concrete
             _producDal = producDal;
             _categoryService = categoryService;
         }
-
-        [SecuredOperation("product.add,admin")]
+        //Yetkilendirme
+        //[SecuredOperation("product.add,admin")]
         [ValidationAspect(typeof(ProductValidator))]
+        [CacheRemoveAspect("IProductService.Get")]
         public IResult Add(Product product)//add methodu ValidationAspect(doğrula) ProductValidator methodunu kullanarak
         {
            IResult result= BussinessRules.Run(CheckIfProductCountOfCategoryCorrect(product.CategoryId), 
@@ -48,7 +52,7 @@ namespace Business.Concrete
 
 
         }
-
+        [CacheAspect]//Key,value
         public IDataResult<List<Product>> GetAll()
         {
             //iş kodları
@@ -68,7 +72,8 @@ namespace Business.Concrete
             return new SuccessDataResult<List<Product>>(_producDal.GetAll(p => p.CategoryId == id));
             //SuccessDataResult içerisinde List<Product> var ctor'a _producDal.GetAll(p=>p.CategoryId==id) gönderiyoruz
         }
-
+        [CacheAspect]
+        [PerformanceAspect(5)]// bu method permormansı 5 sn geçerse uyarma yapılır
         public IDataResult<Product> GetById(int productId)
         {
             return new SuccessDataResult<Product>(_producDal.Get(p => p.ProductId == productId));
@@ -86,6 +91,7 @@ namespace Business.Concrete
         }
 
         [ValidationAspect(typeof(ProductValidator))]
+        [CacheRemoveAspect("IProductService.Get")]//IProductService.Get olan keyleri iptal et
         public IResult Update(Product product)
         {
             throw new NotImplementedException();
@@ -138,6 +144,10 @@ namespace Business.Concrete
             return new SuccessResult();
         }
 
-
+        [TransactionScopeAspect]
+        public IResult AddTransactionalTest(Product product)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
